@@ -46,7 +46,7 @@ if "client" not in st.session_state or st.session_state.get("current_api_key") !
     st.session_state.client = genai.Client(api_key=api_key)
     st.session_state.current_api_key = api_key
     st.session_state.chat_session = st.session_state.client.chats.create(
-        model="gemini-3.0-flash",
+        model="gemini-2.5-flash",
         config=CONFIG_INSTRUCCIONES
     )
 
@@ -61,10 +61,10 @@ if "messages" not in st.session_state:
 # ==============================================================================
 with st.sidebar:
     st.header("⚙️ Opciones del Agente")
-    st.markdown("Modelo backend: **Gemini 3.8 Flash**")
+    st.markdown("Modelo backend: **Gemini 2.5 Flash**")
     if st.button("🧹 Limpiar Conversación"):
         st.session_state.chat_session = st.session_state.client.chats.create(
-            model="gemini-3.8-flash",
+            model="gemini-2.5-flash",
             config=CONFIG_INSTRUCCIONES
         )
         st.session_state.messages = [
