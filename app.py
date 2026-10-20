@@ -6,13 +6,13 @@ from google.genai import types
 # 1. CONFIGURACIÓN DE LA PÁGINA WEB
 # ==============================================================================
 st.set_page_config(
-    page_title="Asistente AI - Sistemas Inteligentes",
+    page_title="Asistente AI - Lider tecnico virtual",
     page_icon="🤖",
     layout="centered"
 )
 
-st.title("🤖 Asistente Virtual 'Astra'")
-st.caption("UAdeO • Materia: Sistemas Inteligentes • Dra. Aiblis Susej Herrera Palafox")
+st.title("🤖  Lider tecnico virtual  'Astra'")
+st.caption("Empresa tecnologia nexus code")
 
 # ==============================================================================
 # 2. GESTIÓN SEGURA DE LA API KEY (LOCAL Y STREAMLIT CLOUD)
@@ -24,18 +24,20 @@ except Exception:
     # ⚠️ REEMPLAZA ESTA CADENA POR TU CLAVE REAL DE GOOGLE AI STUDIO PARA PRUEBAS LOCALES
     api_key =  "AQ.Ab8RN6KTrHY1QzE1Uq4GcXu-S0bWygtzZt_hIwLwCn8ktjvkGA"
 
+rol = "" 
 
 # ==============================================================================
 # 3. CONFIGURACIÓN DE PERSONALIDAD DEL BOT
 # ==============================================================================
 CONFIG_INSTRUCCIONES = types.GenerateContentConfig(
     system_instruction=(
-        "Eres 'Astra', un asistente académico inteligente, formal y estructurado para la materia "
-        "Sistemas Inteligentes de la UAdeO. Tu objetivo es explicar conceptos de Inteligencia Artificial, "
-        "Agentes y Redes Neuronales de forma clara y accesible. Si te preguntan por entregas o fechas, "
-        "indica amablemente que deben verificar las indicaciones de la Dra. Aiblis Susej Herrera Palafox."
+        "Eres 'Astra', un Lider tecnico virtual para una empresa del sector tecnologico, "
+        "Tu labor es ser el primer filtro para la seleccion de programadores, "
+        "Formularas preguntas para la creacion de preguntas para estos, y despues de la tercera respuesta daras una evaluacion de las repustas del aspirante,"
+        "si el candidato intenta desviar la conversacion a otras cosas que no es la entrevista indica amablemente que deben responder las preguntas, "
+        "estaras entrevistando a " + rol
     ),
-    temperature=0.7
+    temperature=0.9
 )
 
 # ==============================================================================
@@ -53,12 +55,14 @@ if "client" not in st.session_state or st.session_state.get("current_api_key") !
 # Historial gráfico de mensajes
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "👋 ¡Hola! Soy Astra. ¿En qué tema de Sistemas Inteligentes te puedo ayudar hoy?"}
+        {"role": "assistant", "content": "👋 ¡Hola! Soy Astra. Sere tu entrevistador para la empresa nexus code ¿Comó te llamas?"}
     ]
 
 # ==============================================================================
 # 5. BARRA LATERAL (OPCIONES DE REINICIO)
 # ==============================================================================
+
+combobox = st.selectbox({"Desarrollador python Junio" , "Desarrollador Web frontend","Integrador de APIs/Bots"})
 with st.sidebar:
     st.header("⚙️ Opciones del Agente")
     st.markdown("Modelo backend: **Gemini 3.8 Flash**")
@@ -68,9 +72,15 @@ with st.sidebar:
             config=CONFIG_INSTRUCCIONES
         )
         st.session_state.messages = [
-            {"role": "assistant", "content": "🧹 La sesión ha sido reiniciada. ¿Qué otra duda tienes?"}
+            {"role": "assistant", "content": "🧹 La sesión ha sido reiniciada. Hay que empezar de nuevo las preguntas"}
         ]
         st.rerun()
+        
+    combobox = st.selectbox({"Desarrollador python Junio" , "Desarrollador Web frontend","Integrador de APIs/Bots"})
+    if st.selectbox("Rol a postular:"):
+        rol = "Desarrollador python Junio"
+        
+
 
 # ==============================================================================
 # 6. RENDERIZADO DEL HISTORIAL DE MENSAJES
