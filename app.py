@@ -2,9 +2,6 @@ import streamlit as st
 from google import genai
 from google.genai import types
 
-# ==============================================================================
-# 1. CONFIGURACIÓN DE LA PÁGINA WEB
-# ==============================================================================
 st.set_page_config(
     page_title="Asistente AI - Lider tecnico virtual",
     page_icon="🤖",
@@ -14,15 +11,12 @@ st.set_page_config(
 st.title("🤖  Lider tecnico virtual  'Astra'")
 st.caption("Empresa tecnologia nexus code")
 
-# ==============================================================================
-# 2. GESTIÓN SEGURA DE LA API KEY (LOCAL Y STREAMLIT CLOUD)
-# ==============================================================================
+
 try:
-    # Intenta leer la clave desde los secretos de Streamlit Cloud
     api_key = st.secrets["AQ.Ab8RN6KTrHY1QzE1Uq4GcXu-S0bWygtzZt_hIwLwCn8ktjvkGA"]
 except Exception:
-    # ⚠️ REEMPLAZA ESTA CADENA POR TU CLAVE REAL DE GOOGLE AI STUDIO PARA PRUEBAS LOCALES
     api_key =  "AQ.Ab8RN6KTrHY1QzE1Uq4GcXu-S0bWygtzZt_hIwLwCn8ktjvkGA"
+
 
 if "turn_count" not in st.session_state:
     st.session_state.turn_count = 0  # Cuenta cuántas respuestas técnicas lleva el usuario
@@ -53,6 +47,7 @@ with st.sidebar:
             del st.session_state.chat_session
         st.rerun()
 
+
 CONFIG_INSTRUCCIONES = types.GenerateContentConfig(
     system_instruction=(
         "Eres 'Astra', un Lider tecnico virtual para una empresa del sector tecnologico, "
@@ -68,6 +63,8 @@ CONFIG_INSTRUCCIONES = types.GenerateContentConfig(
     ),
     temperature=0.9
 )
+
+
 
 
 if "client" not in st.session_state or st.session_state.get("current_api_key") != api_key:
