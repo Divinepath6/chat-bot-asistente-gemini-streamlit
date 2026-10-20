@@ -93,16 +93,30 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-if user_input := st.chat_input("Escribe tu pregunta o duda aquí..."):
-    st.session_state.messages.append({"role": "user", "content": user_input})
-    with st.chat_message("user"):
-        st.markdown(user_input)
+if not st.session_state.interview_finished:
+    if user_input := st.chat_input("Escribe tu respuesta aquí..."):
+        st.session_state.turn_count += 1
+        
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        with st.chat_message("user"):
+            st.markdown(user_input)
+        with st.chat_message("assistant"):
+            with st.spinner("Astra está evaluando tu respuesta..."):
+                try:
+                    if st.session_state.turn_count >= 3:
+                        prompt_modificado = f"{user_input}\n\n[INSTRUCCIÓN DEL SISTEMA: Esta es mi 3.ª y última respuesta. Entrega mi evaluación técnica final completa basándote en mis tres respuestas, concluye la entrevista y no hagas más preguntas.]"
+                        response = st.session_state.chat_session.send_message(prompt_modificado)
+                        st.session_state.interview_finished = True
+                    else:
+                        response = st.session_state.chat_session.send_message(user_input)
 
-    with st.chat_message("assistant"):
-        with st.spinner("Pensando respuesta..."):
-            try:
-                response = st.session_state.chat_session.send_message(user_input)
-                st.markdown(response.text)
-                st.session_state.messages.append({"role": "assistant", "content": response.text})
-            except Exception as e:
-                st.error(f"❌ Error al consultar la API: {e}")
+                    st.markdown(response.text)
+                    st.session_state.messages.append({"role": "assistant", "content": response.text})
+                    
+                    if st.session_state.interview_finished:
+                        st.rerun()  # Recargar para desactivar el chat_input
+
+                except Exception as e:
+                    st.error(f"❌ Error al consultar la API: {e}")
+else:
+    st.info("💡 **La entrevista ha finalizado.** Revisa la evaluación técnica final arriba. Si deseas realizar un nuevo intento, haz clic en **'🧹 Reiniciar Entrevista'** en la barra lateral.")
