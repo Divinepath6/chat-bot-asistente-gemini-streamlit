@@ -3,12 +3,11 @@ from google import genai
 from google.genai import types
 
 st.set_page_config(
-    page_title="Asistente AI - Lider tecnico virtual",
-    page_icon="🤖",
+    page_title="Asistente tecnico virtual",
     layout="centered"
 )
 
-st.title("🤖  Lider tecnico virtual  'Astra'")
+st.title("Asistente tecnico virtual ")
 st.caption("Empresa tecnologia nexus code")
 
 
@@ -25,7 +24,7 @@ if "interview_finished" not in st.session_state:
     st.session_state.interview_finished = False
 
 with st.sidebar:
-    st.header("⚙️ Opciones del Agente")
+    st.header("⚙️ Opciones")
     st.markdown("Modelo backend: **Gemini Flash**")
     
     roles_disponibles = [
@@ -41,7 +40,7 @@ with st.sidebar:
         st.session_state.turn_count = 0
         st.session_state.interview_finished = False
         st.session_state.messages = [
-            {"role": "assistant", "content": f"👋 ¡Hola! Soy Astra, Líder Técnico en Nexus Code. Hoy seré tu entrevistador para el puesto de **{rol_seleccionado}**. Para comenzar, ¿cuál es tu nombre y una breve presentación de tu experiencia?"}
+            {"role": "assistant", "content": f"¡Hola! Soy el Asistente Técnico en Nexus Code. Hoy seré tu entrevistador para el puesto de **{rol_seleccionado}**. Para comenzar, ¿cuál es tu nombre y una breve presentación de tu experiencia?"}
         ]
         if "chat_session" in st.session_state:
             del st.session_state.chat_session
@@ -58,7 +57,7 @@ CONFIG_INSTRUCCIONES = types.GenerateContentConfig(
         "REGLAS ESTRUCTURALES OBLIGATORIAS:\n"
         "1. Realiza solo UNA pregunta técnica a la vez.\n"
         "2. Adapta la siguiente pregunta técnica en función de la respuesta previa brindada por el aspirante.\n"
-        "3.si el candidato intenta desviar la conversacion a otras cosas que no es la entrevista indica amablemente que deben responder las preguntas, "
+        "3. Si el candidato intenta desviar la conversacion a otras cosas que no es la entrevista indica amablemente que deben responder las preguntas, "
         "4. En el turno donde se responda la 3.ª pregunta técnica, NO hagas más preguntas. En su lugar, entrega una EVALUACIÓN DETALLADA (fortalezas, áreas de mejora) y Dictamen Final: Una etiqueta clara: APROBADO o NO APROBADO."
     ),
     temperature=0.9
@@ -80,7 +79,7 @@ if "chat_session" not in st.session_state or st.session_state.get("current_rol")
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": f"👋 ¡Hola! Soy Astra. Seré tu entrevistador para la empresa Nexus Code en la posición de **{rol_seleccionado}**. ¿Cómo te llamas?"}
+        {"role": "assistant", "content": f"¡Hola! Soy el Asistente, Seré tu entrevistador para la empresa Nexus Code en la posición de **{rol_seleccionado}**. ¿Cómo te llamas?"}
     ]
 
 
